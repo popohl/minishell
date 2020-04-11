@@ -2,6 +2,7 @@
 NAME		= minishell
 SRCSDIR		= srcs
 OBJSDIR		= objs
+INCLUDES	= .
 EXTLIB		= libft
 
 # Compiler options
@@ -25,7 +26,7 @@ $(NAME): $(OBJS)
 $(OBJS): $(OBJSDIR)/%.o: $(SRCSDIR)/%.c
 	@mkdir -p $(@D)
 	@echo Compiling $<
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
 clean:
 	rm -rf $(OBJSDIR)
