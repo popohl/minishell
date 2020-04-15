@@ -19,21 +19,30 @@ OBJS	= $(SRCS:%.c=$(OBJSDIR)/%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(EXTLIB)/$(EXTLIB).a
 	@echo "Compiling $@"
-	@$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $^
 
 $(OBJS): $(OBJSDIR)/%.o: $(SRCSDIR)/%.c
 	@mkdir -p $(@D)
 	@echo Compiling $<
 	@$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
+$(EXTLIB)/$(EXTLIB).a:
+	@echo "Compiling $@"
+	@$(MAKE) -s -C $(EXTLIB)
+
 clean:
 	rm -rf $(OBJSDIR)
+	$(MAKE) -C $(EXTLIB) clean
 
 fclean: clean
 	rm -rf $(NAME)
+	$(MAKE) -C $(EXTLIB) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+test: all
+	./$(NAME)
+
+.PHONY: all clean fclean re test
