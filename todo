@@ -1,0 +1,20 @@
+Lire les commandes : imprimer pour chaque commande entrée: Le nom du programme appelé, son input et sa destination
+; dans la ligne de commande doit séparer les commandes
+’ et " doivent marcher comme dans bash, à l’exception du multiligne.
+
+	- echo et l’option ’-n’
+Chercher et lancer le bon executable (basé sur une variable d’environnement PATH ou en utilisant unpath absolu), comme dans bash
+	- cd uniquement avec un chemin absolu ou relatif
+	- pwd sans aucune option
+	- export sans aucune option
+	- unset sans aucune option
+	- env sans aucune option ni argument
+	- exit sans aucune option
+Les redirections < , > et “>>” doivent marcher comme dans bash, à l’exception desaggrégations de fd :
+	- redirection <
+	- redirection >
+	- redirection >>
+Pipes | doivent marcher comme dans bash
+Les variables d’environnement ($ suivi de caractères) doivent marcher comme dans bash.
+$? (Valeur de retour de la dernière commande) doit marcher comme dans bash
+ctrl-C (interrompre l'execution), ctrl-D (End of file) et ctrl-\ (QUIT the fokin program) doivent afficher le même résultat que dans bash.

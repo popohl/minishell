@@ -1,0 +1,5 @@
+#!/bin/sh
+
+file_list=$(ls srcs | tr "\n\t" " ")
+sed "s/SRCS		=/SRCS		= $file_list/" Makefile > Makefile_tmp && mv Makefile_tmp Makefile
+echo "updated Makefile's file_list to \"$file_list\""

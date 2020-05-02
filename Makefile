@@ -2,8 +2,10 @@
 NAME		= minishell
 SRCSDIR		= srcs
 OBJSDIR		= objs
-INCLUDES	= .
+INCLUDES	= inc
 EXTLIB		= libft
+
+SRCS		= parser.c prompt.c
 
 # Compiler options
 CC			= gcc
@@ -14,19 +16,18 @@ CFLAGS		= -Wall -Wextra -g3
 # you should not have to modify it				  #
 ###################################################
 
-SRCS	= $(subst ./srcs/,,$(wildcard ./srcs/*.c))
 OBJS	= $(SRCS:%.c=$(OBJSDIR)/%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(EXTLIB)/$(EXTLIB).a
-	@echo "Compiling $@"
+	@echo "Assembling $@"
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(OBJS): $(OBJSDIR)/%.o: $(SRCSDIR)/%.c
 	@mkdir -p $(@D)
 	@echo Compiling $<
-	@$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(INCLUDES) -I$(EXTLIB)/$(EXTLIB).h -c $< -o $@
 
 $(EXTLIB)/$(EXTLIB).a:
 	@echo "Compiling $@"
@@ -34,11 +35,11 @@ $(EXTLIB)/$(EXTLIB).a:
 
 clean:
 	rm -rf $(OBJSDIR)
-	$(MAKE) -C $(EXTLIB) clean
+	@$(MAKE) -s -C $(EXTLIB) clean
 
 fclean: clean
 	rm -rf $(NAME)
-	$(MAKE) -C $(EXTLIB) fclean
+	@$(MAKE) -s -C $(EXTLIB) fclean
 
 re: fclean all
 
