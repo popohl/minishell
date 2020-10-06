@@ -6,7 +6,7 @@
 /*   By: paulohl <paulohl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/16 19:39:29 by paulohl           #+#    #+#             */
-/*   Updated: 2020/10/06 10:04:33 by paulohl          ###   ########.fr       */
+/*   Updated: 2020/10/06 11:42:26 by paulohl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ typedef struct			s_commands {
 	struct s_commands	*next;
 }						t_commands;
 
-int		parser(char *buffer);
+int						parser(char *buffer);
 
 #endif

@@ -6,13 +6,20 @@
 /*   By: paulohl <paulohl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/16 19:39:52 by paulohl           #+#    #+#             */
-/*   Updated: 2020/10/06 11:20:23 by paulohl          ###   ########.fr       */
+/*   Updated: 2020/10/06 11:40:44 by paulohl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 #include "../libft/libft.h"
+
+/*
+** create_link creates a link for the t_commands linked list.
+** it then initializes the values.
+** the character 'which_in' indicates whether command takes in a redirection,
+** it can have the values: ';' (no redirection), '|' (pipe) and '<' (file input)
+*/
 
 t_commands	*create_link(char which_in)
 {
@@ -26,16 +33,27 @@ t_commands	*create_link(char which_in)
 	return (link);
 }
 
+/*
+** get_args only creates a string for the moment, but it will have the task of
+** separating each argument into separate words to be sent to execve.
+** It will return a char** instead of a char*.
+** It may have the task of detecting '<', '>' and '>>' but not sure yet.
+*/
+
 char		*get_args(char *buffer, int i)
 {
 	char	*result;
 
-	if (!(result = (char *)malloc(sizeof(char) * i)))
-		return (NULL);
 	if (!(result = ft_strdup(buffer)))
 		return (NULL);
 	return (result);
 }
+
+/*
+** save_link saves the command inside the current link's cmd_args and
+** creates a new link with create_link.
+** It then resets buffer and i's values to continue reading the line.
+*/
 
 t_commands	*save_link(t_commands *command, char **buffer, int *i)
 {
@@ -47,6 +65,12 @@ t_commands	*save_link(t_commands *command, char **buffer, int *i)
 	*i = -1;
 	return (command->next);
 }
+
+/*
+** quote_sensitive_split splits the string by the characters ';' and '|' but
+** it ignores anything between single and double quotes.
+** Each splitted string is stored in a linked list 't_commands'.
+*/
 
 t_commands	*quote_sensitive_split(char *buffer)
 {
