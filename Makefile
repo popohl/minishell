@@ -9,7 +9,7 @@ SRCS		= parser.c prompt.c
 
 # Compiler options
 CC			= gcc
-CFLAGS		= -Wall -Wextra -g3
+CFLAGS		= -Wall -Wextra -g3 -fsanitize=address
 
 ###################################################
 # The rest is done by the MakeFile automatically, #
