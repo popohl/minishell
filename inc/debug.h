@@ -6,12 +6,12 @@
 /*   By: paulohl <paulohl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/16 19:39:40 by paulohl           #+#    #+#             */
-/*   Updated: 2020/10/06 11:42:03 by paulohl          ###   ########.fr       */
+/*   Updated: 2020/10/06 13:06:05 by paulohl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEBUG_H
-# define DEBUG_H
+#ifndef DEVELOP_H
+# define DEVELOP_H
 
 # define DD(x) printf("%d\n", x)
 # define D2D(x, y) printf("%d %d\n", x, y)
