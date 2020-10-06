@@ -6,7 +6,7 @@
 /*   By: paulohl <paulohl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/16 19:39:52 by paulohl           #+#    #+#             */
-/*   Updated: 2020/10/06 10:33:14 by paulohl          ###   ########.fr       */
+/*   Updated: 2020/10/06 11:20:23 by paulohl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,36 +37,42 @@ char		*get_args(char *buffer, int i)
 	return (result);
 }
 
+t_commands	*save_link(t_commands *command, char **buffer, int *i)
+{
+	printf("%c\n", buffer[0][*i]);
+	command->next = create_link(buffer[0][*i]);
+	buffer[0][*i] = 0;
+	command->cmd_args = get_args(*buffer, *i);
+	*buffer = *buffer + *i + 1;
+	*i = -1;
+	return (command->next);
+}
+
 t_commands	*quote_sensitive_split(char *buffer)
 {
-	t_commands	*commands;
+	t_commands	*command;
 	t_commands	*first;
 	int			i;
 
 	i = -1;
 	if (buffer[i + 1] == 0)
+		return (create_link(';'));
+	if (!(command = create_link(';')))
 		return (NULL);
-	commands = create_link(';');
-	first = commands;
+	first = command;
 	while (buffer[++i])
 	{
-		if (buffer[i] == '"')
+		if (buffer[i] == '"' && (++i != -1))
 			while (buffer[i] && buffer[i] != '"')
 				i++;
-		else if (buffer[i] == '\'')
+		else if (buffer[i] == '\'' && (++i != -1))
 			while (buffer[i] && buffer[i] != '\'')
 				i++;
 		else if (buffer[i] == '|' || buffer[i] == ';')
-		{
-			commands->next = create_link(buffer[i]);
-			buffer[i] = 0;
-			commands->cmd_args = get_args(buffer, i);
-			commands = commands->next;
-			buffer = buffer + i + 1;
-			i = -1;
-		}
+			if (!(command = save_link(command, &buffer, &i)))
+				return (NULL);
 	}
-	commands->cmd_args = get_args(buffer, i);
+	command->cmd_args = get_args(buffer, i);
 	return (first);
 }
 
