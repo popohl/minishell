@@ -6,7 +6,7 @@
 /*   By: paulohl <paulohl@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/16 19:39:52 by paulohl           #+#    #+#             */
-/*   Updated: 2020/10/06 19:00:39 by paulohl          ###   ########.fr       */
+/*   Updated: 2020/10/08 13:31:59 by pohl             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,23 @@ int			arg_count(char *args)
 	count = 1;
 	while (args[i])
 	{
-		if (args[i] == '>' || args[i] == '<' || 
-				(args[i] == '>' && args[i + 1] == '>' && (++i != -1)))
+		if ((args[i] == '>' && args[i + 1] == '>' && (++i != -1)) ||
+				args[i] == '>' || args[i] == '<')
 		{
 			while (args[i + 1] == ' ')
 				i++;
-			while (args[i + 1] && args[i + 1] != ' ')
-				i++;
+			if (args[i + 1] == '"' || args[i + 1] == '\'')
+				i = skip_quote(args, i + 1) + 1;
+			else
+				while (args[i + 1] && args[i + 1] != ' ')
+					i++;
 		}
 		else if (i > 0 && args[i] != ' ' && args[i - 1] == ' ')
 			count++;
-		if (args[i] == '"' || args[i] == '\'')
+		if (args[i] && (args[i] == '"' || args[i] == '\''))
 			i = skip_quote(args, i);
-		i++;
+		if (args[i])
+			i++;
 	}
 	return (count);
 }
@@ -84,12 +88,10 @@ t_commands	*save_link(t_commands *command, char **buffer, int *i)
 {
 	command->next = create_link(buffer[0][*i]);
 	buffer[0][*i] = 0;
-	printf("buffer: %c\n", buffer[0][0]);
 	while (buffer[0][0] == ' ')
 	{
 		(*buffer)++;
 		(*i)--;
-		printf("buffer: %c\n", buffer[0][0]);
 	}
 	if (!(command->cmd_args = ft_strdup(*buffer)))
 		return (NULL);
@@ -142,8 +144,8 @@ int			parser(char *buffer)
 	while (args != 0)
 	{
 		// printf("args->which_in: %c, args->cmd_args: %s\n", args->which_in, args->cmd_args);
-		// printf("cmd_args: >%s<, argc: ", args->cmd_args);
 		argc = arg_count(args->cmd_args);
+		printf("cmd_args: {%s}, argc: ", args->cmd_args);
 		DD(argc);
 		args = args->next;
 		argc = 0;
